@@ -12,4 +12,4 @@ I have not completed all the course materials yet. Completed assignments are mar
 - [Q2](https://github.com/jariasf/CS231n/blob/master/assignment1/svm.ipynb): Training a Support Vector Machine. (_Done_)
 - [Q3](https://github.com/jariasf/CS231n/blob/master/assignment1/softmax.ipynb): Implement a Softmax classifier. (_Done_)
 - [Q4](https://github.com/jariasf/CS231n/blob/master/assignment1/two_layer_net.ipynb): Two-Layer Neural Network. (_Done_)
-- [Q5](https://github.com/jariasf/CS231n/blob/master/assignment1/features.ipynb): Higher Level Representations: Image Features.
+- [Q5](https://github.com/jariasf/CS231n/blob/master/assignment1/features.ipynb): Higher Level Representations: Image Features. (_Done_)
