@@ -246,12 +246,15 @@ class FullyConnectedNet(object):
         ############################################################################
         x = X
         caches = []
-        for i in range(self.num_layers):
+        for i in range(self.num_layers-1):
             w = self.params['W'+str(i+1)]
             b = self.params['b'+str(i+1)]
             x, cache = affine_relu_forward(x,w,b)
             caches.append(cache)
-        scores = x
+        w = self.params['W'+str(self.num_layers)]
+        b = self.params['b'+str(self.num_layers)]
+        scores, cache = affine_forward(x,w,b)
+        caches.append(cache)
         ############################################################################
         #                             END OF YOUR CODE                             #
         ############################################################################
@@ -282,7 +285,10 @@ class FullyConnectedNet(object):
 
         # calculate gradients
         dout = softmax_grad
-        for i in range(self.num_layers - 1, -1, -1):
+        dout, dw, db = affine_backward(dout, caches[self.num_layers - 1])
+        grads['W' + str(self.num_layers)] = dw + self.reg * self.params['W' + str(self.num_layers)]
+        grads['b' + str(self.num_layers)] = db
+        for i in range(self.num_layers - 2, -1, -1):
             dx, dw, db = affine_relu_backward(dout, caches[i])
             grads['W' + str(i + 1)] = dw + self.reg * self.params['W' + str(i + 1)]
             grads['b' + str(i + 1)] = db
