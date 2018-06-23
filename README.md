@@ -15,7 +15,7 @@ I have not completed all the course materials yet. Completed assignments are mar
 - [Q5](https://github.com/jariasf/CS231n/blob/master/assignment1/features.ipynb): Higher Level Representations: Image Features. (_Done_)
 
 ### Assignment 2:
-- [Q1](https://github.com/jariasf/CS231n/blob/master/assignment2/FullyConnectedNets.ipynb): Fully-connected Neural Network.
+- [Q1](https://github.com/jariasf/CS231n/blob/master/assignment2/FullyConnectedNets.ipynb): Fully-connected Neural Network. (_Done_)
 - [Q2](https://github.com/jariasf/CS231n/blob/master/assignment2/BatchNormalization.ipynb): Batch Normalization.
 - [Q3](https://github.com/jariasf/CS231n/blob/master/assignment2/Dropout.ipynb): Dropout.
 - [Q4](https://github.com/jariasf/CS231n/blob/master/assignment2/ConvolutionalNetworks.ipynb): Convolutional Networks.
