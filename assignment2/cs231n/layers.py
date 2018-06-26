@@ -256,8 +256,8 @@ def batchnorm_backward(dout, cache):
     dzdv = -0.5*(cache['var']**-1.5)*(cache['x']-cache['mean'])     #[NxD]
     dvdu = -2/N * np.sum(cache['x'] - cache['mean'], axis=0)        #[1xD]
 
-    dx = dfdz*dzdx + np.sum(dfdz,axis=0)*dzdu*dudx + \
-         np.sum(dfdz*dzdv,axis=0)*(dvdx+dvdu*dudx) 
+    dx = dfdz*dzdx + np.sum(dfdz*dzdu,axis=0)*dudx + \
+         np.sum(dfdz*dzdv,axis=0)*(dvdx+dvdu*dudx)
     ###########################################################################
     #                             END OF YOUR CODE                            #
     ###########################################################################
@@ -288,7 +288,14 @@ def batchnorm_backward_alt(dout, cache):
     # should be able to compute gradients with respect to the inputs in a     #
     # single statement; our implementation fits on a single 80-character line.#
     ###########################################################################
-    pass
+    dbeta = dout.sum(axis=0)
+    dgamma = np.sum(dout * cache['z'], axis=0)
+    N = dout.shape[0]
+    z = cache['z']
+    dfdz = dout * cache['gamma']                                    #[NxD]
+    dfdz_sum = np.sum(dfdz,axis=0)                                  #[1xD]
+    dx = dfdz - dfdz_sum/N - np.sum(dfdz * z,axis=0) * z/N          #[NxD]
+    dx /= cache['std']
     ###########################################################################
     #                             END OF YOUR CODE                            #
     ###########################################################################
