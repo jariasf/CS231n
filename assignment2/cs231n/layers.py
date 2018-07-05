@@ -503,7 +503,35 @@ def conv_forward_naive(x, w, b, conv_param):
     # TODO: Implement the convolutional forward pass.                         #
     # Hint: you can use the function np.pad for padding.                      #
     ###########################################################################
-    pass
+    pad = conv_param['pad']
+    stride = conv_param['stride']
+    N, C, H, W = x.shape
+    F, C, FH, FW = w.shape
+
+    assert (H - FH + 2 * pad) % stride == 0
+    assert (W - FW + 2 * pad) % stride == 0
+    outH = 1 + (H - FH + 2 * pad) / stride
+    outW = 1 + (W - FW + 2 * pad) / stride
+
+    # create output tensor after convolution layer
+    out = np.zeros((N, F, outH, outW))
+
+    # padding all input data
+    x = np.pad(x, ((0,0), (0,0),(pad,pad),(pad,pad)), 'constant')
+    H, W = x.shape[2], x.shape[3]    
+
+    # create w_row matrix
+    w_row = w.reshape(F, C*FH*FW)
+
+    # create x_col matrix with values that each neuron works with
+    x_col = np.zeros((C*FH*FW, outH*outW))
+    for index in range(N):
+        neuron = 0
+        for i in range(0, H-FH+1, stride):
+            for j in range(0, W-FW+1,stride):
+                x_col[:,neuron] = x[index,:,i:i+FH,j:j+FW].reshape(C*FH*FW)
+                neuron += 1
+        out[index] = (w_row.dot(x_col) + b.reshape(F,1)).reshape(F, outH, outW)
     ###########################################################################
     #                             END OF YOUR CODE                            #
     ###########################################################################
