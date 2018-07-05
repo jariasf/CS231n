@@ -517,25 +517,25 @@ def conv_forward_naive(x, w, b, conv_param):
     out = np.zeros((N, F, outH, outW))
 
     # padding all input data
-    x = np.pad(x, ((0,0), (0,0),(pad,pad),(pad,pad)), 'constant')
-    H, W = x.shape[2], x.shape[3]    
+    x_pad = np.pad(x, ((0,0), (0,0),(pad,pad),(pad,pad)), 'constant')
+    H_pad, W_pad = x_pad.shape[2], x_pad.shape[3]    
 
     # create w_row matrix
-    w_row = w.reshape(F, C*FH*FW)
+    w_row = w.reshape(F, C*FH*FW)                            #[F x C*FH*FW]
 
-    # create x_col matrix with values that each neuron works with
-    x_col = np.zeros((C*FH*FW, outH*outW))
+    # create x_col matrix with values that each neuron is connected to
+    x_col = np.zeros((C*FH*FW, outH*outW))                   #[C*FH*FW x H'*W']
     for index in range(N):
-        neuron = 0
-        for i in range(0, H-FH+1, stride):
-            for j in range(0, W-FW+1,stride):
-                x_col[:,neuron] = x[index,:,i:i+FH,j:j+FW].reshape(C*FH*FW)
+        neuron = 0 
+        for i in range(0, H_pad-FH+1, stride):
+            for j in range(0, W_pad-FW+1,stride):
+                x_col[:,neuron] = x_pad[index,:,i:i+FH,j:j+FW].reshape(C*FH*FW)
                 neuron += 1
         out[index] = (w_row.dot(x_col) + b.reshape(F,1)).reshape(F, outH, outW)
     ###########################################################################
     #                             END OF YOUR CODE                            #
     ###########################################################################
-    cache = (x, w, b, conv_param)
+    cache = (x_pad, w, b, conv_param)
     return out, cache
 
 
@@ -556,7 +556,35 @@ def conv_backward_naive(dout, cache):
     ###########################################################################
     # TODO: Implement the convolutional backward pass.                        #
     ###########################################################################
-    pass
+    x_pad, w, b, conv_param = cache
+    N, F, outH, outW = dout.shape
+    N, C, Hpad, Wpad = x_pad.shape
+    FH, FW = w.shape[2], w.shape[3]
+    stride = conv_param['stride']
+    pad = conv_param['pad']
+
+    # initialize gradients
+    dx = np.zeros((N, C, Hpad - 2*pad, Wpad - 2*pad))
+    dw, db = np.zeros(w.shape), np.zeros(b.shape)
+
+    # create w_row matrix
+    w_row = w.reshape(F, C*FH*FW)                            #[F x C*FH*FW]
+
+    # create x_col matrix with values that each neuron is connected to
+    x_col = np.zeros((C*FH*FW, outH*outW))                   #[C*FH*FW x H'*W']
+    for index in range(N):
+        out_col = dout[index].reshape(F, outH*outW)          #[F x H'*W']
+        w_out = w_row.T.dot(out_col)                         #[C*FH*FW x H'*W']
+        dx_cur = np.zeros((C, Hpad, Wpad))
+        neuron = 0
+        for i in range(0, Hpad-FH+1, stride):
+            for j in range(0, Wpad-FW+1, stride):
+                dx_cur[:,i:i+FH,j:j+FW] += w_out[:,neuron].reshape(C,FH,FW)
+                x_col[:,neuron] = x_pad[index,:,i:i+FH,j:j+FW].reshape(C*FH*FW)
+                neuron += 1
+        dx[index] = dx_cur[:,pad:-pad, pad:-pad]
+        dw += out_col.dot(x_col.T).reshape(F,C,FH,FW)
+        db += out_col.sum(axis=1)
     ###########################################################################
     #                             END OF YOUR CODE                            #
     ###########################################################################
