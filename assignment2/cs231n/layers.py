@@ -614,7 +614,24 @@ def max_pool_forward_naive(x, pool_param):
     ###########################################################################
     # TODO: Implement the max-pooling forward pass                            #
     ###########################################################################
-    pass
+    N, C, H, W = x.shape
+    stride = pool_param['stride']
+    PH = pool_param['pool_height']
+    PW = pool_param['pool_width']
+    outH = 1 + (H - PH) / stride
+    outW = 1 + (W - PW) / stride
+
+    # create output tensor for pooling layer
+    out = np.zeros((N, C, outH, outW))
+    for index in range(N):
+        out_col = np.zeros((C, outH*outW))
+        neuron = 0
+        for i in range(0, H - PH + 1, stride):
+            for j in range(0, W - PW + 1, stride):
+                pool_region = x[index,:,i:i+PH,j:j+PW].reshape(C,PH*PW)
+                out_col[:,neuron] = pool_region.max(axis=1)
+                neuron += 1
+        out[index] = out_col.reshape(C, outH, outW)
     ###########################################################################
     #                             END OF YOUR CODE                            #
     ###########################################################################
@@ -637,7 +654,28 @@ def max_pool_backward_naive(dout, cache):
     ###########################################################################
     # TODO: Implement the max-pooling backward pass                           #
     ###########################################################################
-    pass
+    x, pool_param = cache
+    N, C, outH, outW = dout.shape
+    H, W = x.shape[2], x.shape[3]
+    stride = pool_param['stride']
+    PH, PW = pool_param['pool_height'], pool_param['pool_width']
+
+    # initialize gradient
+    dx = np.zeros(x.shape)
+    
+    for index in range(N):
+        dout_row = dout[index].reshape(C, outH*outW)
+        neuron = 0
+        for i in range(0, H-PH+1, stride):
+            for j in range(0, W-PW+1, stride):
+                pool_region = x[index,:,i:i+PH,j:j+PW].reshape(C,PH*PW)
+                max_pool_indices = pool_region.argmax(axis=1)
+                dout_cur = dout_row[:,neuron]
+                neuron += 1
+                # pass gradient only through indices of max pool
+                dmax_pool = np.zeros(pool_region.shape)
+                dmax_pool[np.arange(C),max_pool_indices] = dout_cur
+                dx[index,:,i:i+PH,j:j+PW] += dmax_pool.reshape(C,PH,PW)
     ###########################################################################
     #                             END OF YOUR CODE                            #
     ###########################################################################
