@@ -785,7 +785,20 @@ def spatial_groupnorm_forward(x, gamma, beta, G, gn_param):
     # the bulk of the code is similar to both train-time batch normalization  #
     # and layer normalization!                                                # 
     ###########################################################################
-    pass
+    N, C, H, W = x.shape
+    size = (N*G, C//G *H*W)
+    x = x.reshape(size).T
+    gamma = gamma.reshape(1, C, 1, 1)
+    beta = beta.reshape(1, C, 1, 1)
+    # similar to batch normalization
+    mu = x.mean(axis=0)
+    var = x.var(axis=0) + eps
+    std = np.sqrt(var)
+    z = (x - mu)/std
+    z = z.T.reshape(N, C, H, W)
+    out = gamma * z + beta
+    # save values for backward call
+    cache={'std':std, 'gamma':gamma, 'z':z, 'size':size}
     ###########################################################################
     #                             END OF YOUR CODE                            #
     ###########################################################################
@@ -811,7 +824,21 @@ def spatial_groupnorm_backward(dout, cache):
     # TODO: Implement the backward pass for spatial group normalization.      #
     # This will be extremely similar to the layer norm implementation.        #
     ###########################################################################
-    pass
+    N, C, H, W = dout.shape
+    size = cache['size']
+    dbeta = dout.sum(axis=(0,2,3), keepdims=True)
+    dgamma = np.sum(dout * cache['z'], axis=(0,2,3), keepdims=True)
+
+    # reshape tensors
+    z = cache['z'].reshape(size).T
+    M = z.shape[0]
+    dfdz = dout * cache['gamma']
+    dfdz = dfdz.reshape(size).T
+    # copy from batch normalization backward alt
+    dfdz_sum = np.sum(dfdz,axis=0)
+    dx = dfdz - dfdz_sum/M - np.sum(dfdz * z,axis=0) * z/M
+    dx /= cache['std']
+    dx = dx.T.reshape(N, C, H, W)
     ###########################################################################
     #                             END OF YOUR CODE                            #
     ###########################################################################
