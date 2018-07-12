@@ -19,4 +19,4 @@ I have not completed all the course materials yet. Completed assignments are mar
 - [Q2](https://github.com/jariasf/CS231n/blob/master/assignment2/BatchNormalization.ipynb): Batch Normalization. (_Done_)
 - [Q3](https://github.com/jariasf/CS231n/blob/master/assignment2/Dropout.ipynb): Dropout. (_Done_)
 - [Q4](https://github.com/jariasf/CS231n/blob/master/assignment2/ConvolutionalNetworks.ipynb): Convolutional Networks. (_Done_)
-- [Q5](https://github.com/jariasf/CS231n/blob/master/assignment2/TensorFlow.ipynb): PyTorch / TensorFlow on CIFAR-10.
+- [Q5](https://github.com/jariasf/CS231n/blob/master/assignment2/TensorFlow.ipynb): PyTorch / TensorFlow on CIFAR-10. (TensorFlow/_Done_)
