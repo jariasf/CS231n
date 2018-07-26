@@ -5,7 +5,7 @@ This repository contains my solutions to the assignments of the [CS231n](http://
 
 Find course notes and assignments [here](http://cs231n.github.io) and be sure to check out the video lectures for [Winter 2016](https://www.youtube.com/playlist?list=PLkt2uSq6rBVctENoVBg1TpCC7OQi31AlC) and [Spring 2017](https://www.youtube.com/playlist?list=PLC1qU-LWwrF64f4QKQT-Vg5Wr4qEE1Zxk)!
 
-I have not completed all the course materials yet. Completed assignments are marked as (_Done_), otherwise they are as originally downloaded from the course site.
+Assignments using Tensorflow are completed, those using Pytorch will be implemented in the future.
 
 ### Assignment 1:
 - [Q1](https://github.com/jariasf/CS231n/blob/master/assignment1/knn.ipynb): k-Nearest Neighbor classifier. (_Done_)
@@ -19,7 +19,7 @@ I have not completed all the course materials yet. Completed assignments are mar
 - [Q2](https://github.com/jariasf/CS231n/blob/master/assignment2/BatchNormalization.ipynb): Batch Normalization. (_Done_)
 - [Q3](https://github.com/jariasf/CS231n/blob/master/assignment2/Dropout.ipynb): Dropout. (_Done_)
 - [Q4](https://github.com/jariasf/CS231n/blob/master/assignment2/ConvolutionalNetworks.ipynb): Convolutional Networks. (_Done_)
-- [Q5](https://github.com/jariasf/CS231n/blob/master/assignment2/TensorFlow.ipynb): PyTorch / TensorFlow on CIFAR-10. (TensorFlow/_Done_)
+- [Q5](https://github.com/jariasf/CS231n/blob/master/assignment2/TensorFlow.ipynb): PyTorch / TensorFlow on CIFAR-10. (_Done_)
 
 ### Assignment 3:
 - [Q1](https://github.com/jariasf/CS231n/blob/master/assignment3/RNN_Captioning.ipynb): Image Captioning with Vanilla RNNs. (_Done_)
