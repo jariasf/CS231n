@@ -63,5 +63,5 @@ termcolor==1.1.0
 terminado==0.5
 tornado==4.3
 traitlets==4.0.0
-Werkzeug==0.14.1
+Werkzeug==0.15.3
 yarl==1.2.4
