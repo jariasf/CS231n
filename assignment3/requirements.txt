@@ -22,7 +22,7 @@ html5lib==0.9999999
 idna==2.6
 idna-ssl==1.0.1
 ipykernel==4.2.2
-ipython==4.0.1
+ipython==7.16.3
 ipython-genutils==0.1.0
 ipywidgets==4.1.1
 Jinja2==2.8
