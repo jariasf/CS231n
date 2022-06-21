@@ -41,7 +41,7 @@ nbformat==4.0.1
 nltk==3.2.2
 notebook==4.0.6
 numexpr==2.6.5
-numpy==1.13.3
+numpy==1.22.0
 path.py==8.1.2
 pexpect==4.0.1
 pickleshare==0.5
