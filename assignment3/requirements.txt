@@ -34,7 +34,7 @@ jupyter-core==4.0.6
 Markdown==2.6.11
 MarkupSafe==0.23
 matplotlib==2.0.0
-mistune==0.7.1
+mistune==2.0.3
 multidict==4.3.1
 nbconvert==4.1.0
 nbformat==4.0.1
